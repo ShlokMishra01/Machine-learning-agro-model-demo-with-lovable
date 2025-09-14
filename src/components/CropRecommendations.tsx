@@ -29,9 +29,12 @@ interface CropRecommendation {
 interface CropRecommendationsProps {
   farmData: FarmData | null;
   soilType?: string;
+  confidence?: number;
+  soilAnalysis?: any;
+  language?: 'en' | 'hi';
 }
 
-const CropRecommendations = ({ farmData, soilType }: CropRecommendationsProps) => {
+const CropRecommendations = ({ farmData, soilType, confidence = 0, soilAnalysis = null, language = 'en' }: CropRecommendationsProps) => {
   const [recommendations, setRecommendations] = useState<CropRecommendation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -111,10 +114,10 @@ const CropRecommendations = ({ farmData, soilType }: CropRecommendationsProps) =
         
         // Generate reasons
         const reasons = [];
-        if (npkScore > 0.7) reasons.push("Optimal nutrient levels for this crop");
-        if (tempScore > 0.8) reasons.push("Ideal temperature conditions");
-        if (soilScore > 0.8) reasons.push(`${soil} soil is excellent for this crop`);
-        if (waterScore > 0.7) reasons.push("Water requirements match local conditions");
+        if (npkScore > 0.7) reasons.push(language === 'hi' ? "इस फसल के लिए इष्टतम पोषक तत्व स्तर" : "Optimal nutrient levels for this crop");
+        if (tempScore > 0.8) reasons.push(language === 'hi' ? "आदर्श तापमान स्थितियां" : "Ideal temperature conditions");
+        if (soilScore > 0.8) reasons.push(language === 'hi' ? `${soil} मिट्टी इस फसल के लिए उत्कृष्ट है` : `${soil} soil is excellent for this crop`);
+        if (waterScore > 0.7) reasons.push(language === 'hi' ? "पानी की आवश्यकताएं स्थानीय परिस्थितियों से मेल खाती हैं" : "Water requirements match local conditions");
         
         return {
           name: crop.name,
@@ -125,7 +128,7 @@ const CropRecommendations = ({ farmData, soilType }: CropRecommendationsProps) =
           season: crop.seasons[0],
           waterRequirement: crop.waterReq,
           growthPeriod: crop.growth,
-          reasons: reasons.length > 0 ? reasons : ["Suitable for your region"]
+          reasons: reasons.length > 0 ? reasons : [language === 'hi' ? "आपके क्षेत्र के लिए उपयुक्त" : "Suitable for your region"]
         };
       }).sort((a, b) => b.confidence - a.confidence);
 
@@ -163,8 +166,15 @@ const CropRecommendations = ({ farmData, soilType }: CropRecommendationsProps) =
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin w-16 h-16 border-4 border-accent border-t-transparent rounded-full mx-auto mb-4"></div>
-            <h2 className="text-2xl font-bold text-primary">Analyzing Your Farm Data</h2>
-            <p className="text-muted-foreground">Our AI is generating personalized crop recommendations...</p>
+            <h2 className="text-2xl font-bold text-primary">
+              {language === 'hi' ? 'आपके खेत डेटा का विश्लेषण हो रहा है' : 'Analyzing Your Farm Data'}
+            </h2>
+            <p className="text-muted-foreground">
+              {language === 'hi' 
+                ? 'हमारा AI व्यक्तिगत फसल सिफारिशें तैयार कर रहा है...'
+                : 'Our AI is generating personalized crop recommendations...'
+              }
+            </p>
           </div>
         </div>
       </section>
@@ -175,9 +185,14 @@ const CropRecommendations = ({ farmData, soilType }: CropRecommendationsProps) =
     <section id="results" className="py-16 bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-primary mb-4">AI Crop Recommendations</h2>
+          <h2 className="text-4xl font-bold text-primary mb-4">
+            {language === 'hi' ? 'एआई फसल सिफारिशें' : 'AI Crop Recommendations'}
+          </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Based on your farm's soil composition, weather conditions, and location data
+            {language === 'hi' 
+              ? 'आपके खेत की मिट्टी की संरचना, मौसम की स्थिति और स्थान डेटा के आधार पर'
+              : "Based on your farm's soil composition, weather conditions, and location data"
+            }
           </p>
         </div>
 
