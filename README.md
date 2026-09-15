@@ -1,3 +1,3 @@
 # Prithvi Agro AI
 
-A fresh start for the agricultural AI application.
+Demo protype with lovable 
