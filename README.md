@@ -1,4 +1,4 @@
-# Prithvi Agro AI demo
+# Prithvi Agro AI demo prototype with lovable
 
 **Prithvi Agro AI is a prototype concept for an AI-powered agriculture intelligence platform designed to explore how modern AI technologies can support farmers with accessible, data-driven agricultural assistance.**
 
